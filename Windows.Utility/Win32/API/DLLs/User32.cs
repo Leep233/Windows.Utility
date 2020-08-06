@@ -83,6 +83,16 @@ namespace Windows.Utility.Win32.API.DLLs
         public extern static void mouse_event(MouseEventFlag flags, int dx, int dy, uint data, UIntPtr extraInfo);
 
         /// <summary>
+        /// 合成击键。系统可以使用这样的合成按键来生成WM_KEYUP或WM_KEYDOWN消息。键盘驱动程序的中断处理程序将调用keybd_event函数
+        /// </summary>
+        /// <param name="vKey">虚拟密钥代码。该代码必须是1到254之间的值。有关完整列表，请参阅</param>
+        /// <param name="scan">密钥的硬件扫描代码</param>
+        /// <param name="flags">控制功能操作的各个方面 0 按下 2释放</param>
+        /// <param name="extraInfo">与击键关联的附加值</param>
+        [DllImport("user32.dll")]
+        public extern static void keybd_event(VirtualKeyCodes vKey, byte scan, int  flags,  UIntPtr extraInfo);
+
+        /// <summary>
         /// 指定窗口的边界矩形相交的面积最大的显示监视器。
         /// </summary>
         /// <param name="hwnd">感兴趣窗口的句柄</param>

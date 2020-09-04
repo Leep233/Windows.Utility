@@ -46,7 +46,7 @@ namespace Windows.Utility.Win32.API.DLLs
         /// <param name="nCmdShow"></param>
         /// <returns></returns>
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern int ShowWindow(IntPtr hWnd, WindowStatus nCmdShow );
+        public static extern int ShowWindow(IntPtr hWnd, WindowStatus nCmdShow);
 
         /// <summary>
         /// 
@@ -90,7 +90,7 @@ namespace Windows.Utility.Win32.API.DLLs
         /// <param name="flags">控制功能操作的各个方面 0 按下 2释放</param>
         /// <param name="extraInfo">与击键关联的附加值</param>
         [DllImport("user32.dll")]
-        public extern static void keybd_event(VirtualKeyCodes vKey, byte scan, int  flags,  UIntPtr extraInfo);
+        public extern static void keybd_event(VirtualKeyCodes vKey, byte scan, int flags, UIntPtr extraInfo);
 
         /// <summary>
         /// 指定窗口的边界矩形相交的面积最大的显示监视器。
@@ -150,6 +150,131 @@ namespace Windows.Utility.Win32.API.DLLs
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern int CallNextHookEx(int idHook, int nCode, IntPtr wParam, IntPtr lParam);
 
+        /// <summary>
+        /// 找到窗口句柄
+        /// </summary>
+        /// <param name="lpClassName"></param>
+        /// <param name="lpWindowName"></param>
+        /// <returns></returns>
+        [DllImport("User32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        /// <summary>
+        /// 设置一个窗口
+        /// </summary>
+        /// <param name="hWnd">窗口的句柄</param>
+        /// <param name="hWndInsertAfter">
+        /// 在Z顺序中位于定位的窗口之前的窗口的句柄。此参数必须是窗口句柄或以下值之一：
+        /// -2：将窗口放置在所有非最上面的窗口上方（即，所有最上面的窗口的后面）。如果窗口已经是非最上面的窗口，则此标志无效
+        /// -1：将窗口置于所有非最上面的窗口上方。即使禁用窗口，窗口也将保持其最高位置
+        /// 0：将窗口置于Z顺序的顶部
+        /// 1 ：将窗口置于Z顺序的底部。如果hWnd参数标识了最顶部的窗口，则该窗口将失去其最顶部的状态，并放置在所有其他窗口的底部；
+        /// 
+        /// </param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="cx"></param>
+        /// <param name="cy"></param>
+        /// <param name="uFlags">窗口大小和位置标志。此参数可以是以下值的组合：
+        /// 值	含义
+        ///        SWP_ASYNCWINDOWPOS
+        ///0x4000
+        ///如果调用线程和拥有窗口的线程连接到不同的输入队列，则系统会将请求发布到拥有窗口的线程。这样可以防止在其他线程处理请求时调用线程阻塞其执行。
+        ///SWP_DEFERERASE
+        ///0x2000
+        ///防止生成WM_SYNCPAINT消息。
+        ///SWP_DRAWFRAME
+        ///0x0020
+        ///在窗口周围绘制框架（在窗口的类描述中定义）。
+        ///SWP_FRAMECHANGED
+        ///0x0020
+        ///应用使用SetWindowLong函数设置的新框架样式。即使未更改窗口的大小，也向该窗口发送WM_NCCALCSIZE消息。如果未指定此标志，则仅在更改窗口大小时才发送WM_NCCALCSIZE。
+        ///SWP_HIDEWINDOW
+        ///0x0080
+        ///隐藏窗口。
+        ///SWP_NOACTIVATE
+        ///0x0010
+        ///不激活窗口。如果未设置此标志，则激活窗口并将其移至最顶层或非顶层组的顶部（取决于hWndInsertAfter参数的设置）。
+        ///SWP_NOCOPYBITS
+        ///0x0100
+        ///丢弃客户区的全部内容。如果未指定此标志，则在调整窗口大小或位置后，将保存客户区的有效内容并将其复制回客户区。
+        ///SWP_NOMOVE
+        ///0x0002
+        ///保留当前位置（忽略X和Y参数）。
+        ///SWP_NOOWNERZORDER
+        ///0x0200
+        ///不更改所有者窗口在Z顺序中的位置。
+        ///SWP_NOREDRAW
+        ///0x0008
+        ///不重绘更改。如果设置了此标志，则不会进行任何重绘。这适用于工作区，非工作区（包括标题栏和滚动条）以及由于移动窗口而未显示的父窗口的任何部分。设置此标志后，应用程序必须显式使窗口和父窗口中需要重绘的任何部分无效或重绘。
+        ///SWP_NOREPOSITION
+        ///0x0200
+        ///与SWP_NOOWNERZORDER标志相同。
+        ///SWP_NOSENDCHANGING
+        ///0x0400
+        ///阻止窗口接收WM_WINDOWPOSCHANGING消息。
+        ///SWP_NOSIZE
+        ///0x0001
+        ///保留当前大小（忽略cx和cy参数）。
+        ///SWP_NOZORDER
+        ///0x0004
+        ///保留当前的Z顺序（忽略hWndInsertAfter参数）。
+        ///SWP_SHOWWINDOW
+        ///0x0040 
+        /// 显示窗口
+        /// </param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
+
+        /// <summary>
+        /// 向指定窗口发送消息
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="msg"></param>
+        /// <param name="wParam"></param>
+        /// <param name="lParam"></param>
+        /// <returns></returns>
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>
+        /// 此函数更改指定窗口的属性。SetWindowLong还将指定偏移量的32位（LONG）值设置到窗口的额外窗口内存中
+        /// </summary>
+        /// <param name="hwnd">处理窗口，并间接处理窗口所属的类</param>
+        /// <param name="index">指定要设置的值的从零开始的偏移量。
+        /// 有效值的范围是零到额外的窗口内存的字节数减去4；
+        /// 例如，如果您指定12个或更多字节的额外内存，
+        /// 则值8将是第三个32位整数的索引。对于Windows Embedded CE
+        /// ，字节偏移量必须为4字节的倍数
+        /// GWL_EXSTYLE:
+        /// 设置新的扩展窗口样式。
+        ///GWL_STYLE:
+        ///设置新的窗口样式。GWL_WNDPROC:
+        ///设置窗口过程的新地址。如果窗口与调用线程不属于同一进程，则不能更改此属性。
+        ///GWL_ID:
+        ///设置窗口的新标识符。
+        ///GWL_USERDATA:
+        ///设置与窗口关联的32位值。每个窗口都有一个对应的32位值，供创建该窗口的应用程序使用。Windows CE 2.0和更高版本支持此值，但Windows CE 1.0和1.01不支持
+        ///当hWnd参数标识对话框时，以下值也可用。DWL_DLGPROC:
+        /// 设置对话框过程的新地址。Windows CE 2.0和更高版本支持此值，但Windows CE 1.0和1.01不支持。
+        /// DWL_MSGRESULT:
+        /// 设置在对话框过程中处理的消息的返回值。
+        /// DWL_USER:
+        /// 设置应用程序专用的新的额外信息，例如句柄或指针</param>
+        /// <param name="newLong">指定替换值</param>
+        /// <returns></returns>
+        [DllImport("User32.dll")]
+        public static extern int SetWindowLong(IntPtr hwnd, int index, IntPtr newLong);
+
+        /// <summary>
+        /// 此函数检索有关指定窗口的信息。GetWindowLong还将指定偏移量的32位（长）值检索到窗口的额外窗口存储器中。
+        /// </summary>
+        /// <param name="hwnd"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        [DllImport("User32.dll")]
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
 
     }
 }
